@@ -1,4 +1,4 @@
-BRANCH_NAME:=$(if $(BRANCH_NAME),$(BRANCH_NAME),12.16)
+BRANCH_NAME:=$(if $(BRANCH_NAME),$(BRANCH_NAME),13.10)
 IMAGE_NAME:=$(if $(IMAGE_NAME),$(IMAGE_NAME),skriptfabrik/node-with-chromium)
 TAG_NAME:=$(if $(TAG_NAME),$(TAG_NAME),$(BRANCH_NAME)-local)
 
