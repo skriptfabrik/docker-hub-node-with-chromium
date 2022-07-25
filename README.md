@@ -9,6 +9,9 @@ in order to run web-browser-based unit and e2e tests out of the box.
 
 ## Supported Tags And Respective `Dockerfile` Links
 
+### With Chromium Version `93.0.4577.82`
+* [`17.2.0`, `17.2`, `17`, `latest`](https://github.com/skriptfabrik/docker-hub-node-with-chromium/blob/17.2.0/17.2/Dockerfile)
+
 ### With Chromium Version `79.0.3945.130`
-* [`13.10.1`, `13.10`, `13`, `latest`](https://github.com/skriptfabrik/docker-hub-node-with-chromium/blob/13.10.1/13.10/Dockerfile)
+* [`13.10.1`, `13.10`, `13`](https://github.com/skriptfabrik/docker-hub-node-with-chromium/blob/13.10.1/13.10/Dockerfile)
 * [`12.16.1`, `12.16`, `12`](https://github.com/skriptfabrik/docker-hub-node-with-chromium/blob/12.16.1/12.16/Dockerfile)

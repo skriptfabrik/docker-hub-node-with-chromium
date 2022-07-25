@@ -2,7 +2,8 @@
 
 set -e
 
-export NG_VERSION=9.0.7
+export NG_CLI_ANALYTICS=off
+export NG_VERSION=14.1.0
 
 echo "Testing Docker build with Angular"
 echo "================================="
@@ -10,15 +11,14 @@ ${CHROME_BIN} --version
 ${CHROME_DRIVER_BIN} --version
 
 echo "-----> Installing Angular CLI version ${NG_VERSION}"
-npm install -g @angular/cli@${NG_VERSION} --ignore-scripts
+npm install -g @angular/cli@${NG_VERSION}
 
 echo "-----> Creating new Angular app"
-ng analytics off
 ng new app --defaults --skip-git
 cd app
 
 echo "-----> Building default production app"
-ng build --prod
+ng build -c production
 
 echo "-----> Running default unit tests"
 {
@@ -36,18 +36,3 @@ echo "-----> Running default unit tests"
     echo "};"
 } > my-karma.conf.js
 ng test --karma-config=my-karma.conf.js --browsers=ChromeHeadlessNoSandbox --no-watch
-
-echo "-----> Running default end-to-end tests"
-{
-    echo "exports.config = Object.assign(require('./protractor.conf.js').config, {"
-    echo "  capabilities: {"
-    echo "    browserName: 'chrome',"
-    echo "    chromeOptions: {"
-    echo "      binary: process.env.CHROME_BIN,"
-    echo "      args: ['--headless', '--no-sandbox']"
-    echo "    }"
-    echo "  },"
-    echo "  chromeDriver: process.env.CHROME_DRIVER_BIN"
-    echo "});"
-} > e2e/my-protractor.conf.js
-ng e2e --protractor-config=e2e/my-protractor.conf.js --no-webdriver-update

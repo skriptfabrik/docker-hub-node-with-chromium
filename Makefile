@@ -1,9 +1,10 @@
-BRANCH_NAME:=$(if $(BRANCH_NAME),$(BRANCH_NAME),13.10)
-IMAGE_NAME:=$(if $(IMAGE_NAME),$(IMAGE_NAME),skriptfabrik/node-with-chromium)
-TAG_NAME:=$(if $(TAG_NAME),$(TAG_NAME),$(BRANCH_NAME)-local)
+DOCKER_BUILDKIT := 1
+BRANCH_NAME := $(if $(BRANCH_NAME),$(BRANCH_NAME),17.2)
+IMAGE_NAME := $(if $(IMAGE_NAME),$(IMAGE_NAME),skriptfabrik/node-with-chromium)
+TAG_NAME := $(if $(TAG_NAME),$(TAG_NAME),$(BRANCH_NAME)-local)
 
 .PHONY: default
-default: lint build test
+default: lint build-local test
 
 .PHONY: lint
 lint:
@@ -13,8 +14,12 @@ lint:
 .PHONY: build
 build:
 	@echo "Building Docker image"
-	@docker pull ${IMAGE_NAME}:${TAG_NAME} || true
-	@docker build --cache-from ${IMAGE_NAME}:${TAG_NAME} --file ${BRANCH_NAME}/Dockerfile --tag ${IMAGE_NAME}:${TAG_NAME} .
+	@docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from type=registry,ref=${IMAGE_NAME}:latest --file ${BRANCH_NAME}/Dockerfile --platform linux/amd64 --platform linux/arm64 --pull --push --tag ${IMAGE_NAME}:${TAG_NAME} .
+
+.PHONY: build-local
+build-local:
+	@echo "Building local Docker image"
+	@docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from type=registry,ref=${IMAGE_NAME}:latest --file ${BRANCH_NAME}/Dockerfile --load --pull --tag ${IMAGE_NAME}:${TAG_NAME} .
 
 .PHONY: test
 test:
